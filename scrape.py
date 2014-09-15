@@ -64,3 +64,39 @@ for i in range(1, 3):
 
 		print title, price
 	time.sleep(6)
+
+
+# baihe.com scrape age etc
+import requests
+from bs4 import BeautifulSoup
+import time
+age = []
+now = []
+with open('myid.txt', 'r') as f:
+	for i in f:
+    
+		url = "http://profile.baihe.com/new/BasicInfo.action?oppId=" + str(i)
+		
+		r = requests.get(url)
+		soup = BeautifulSoup(r.content)
+		try:
+			p = soup.find_all("p")
+		except:
+			pass
+	        try:
+		  age.append(p[1].contents[0])
+		  now.append(p[3].contents[0])
+		except:
+		  age.append('NULL')
+		  now.append('NULL')
+		
+		time.sleep(2)
+		
+import csv
+
+csvfile = file('res11.csv', 'wb')
+writer = csv.writer(csvfile)
+for i in range(len(age)):
+    writer.writerow([age[i], now[i]])
+    
+csvfile.close()
