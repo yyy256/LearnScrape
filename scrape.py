@@ -100,3 +100,29 @@ for i in range(len(age)):
     writer.writerow([age[i], now[i]])
     
 csvfile.close()
+
+########
+
+import requests
+from bs4 import BeautifulSoup
+import time
+with open('id.txt', 'r') as f, open('r8.txt', 'w') as ff:
+	for i in f:
+    
+		url = "http://profile.baihe.com/new/BasicInfo.action?oppId=" + str(i)
+		
+		r = requests.get(url)
+		soup = BeautifulSoup(r.content)
+		try:
+			p = soup.find_all("p")
+		except:
+			pass
+	        try:
+		  age = p[1].contents[0].encode('utf-8')
+		  now = p[3].contents[0].encode('utf-8')
+		except:
+		  age = 'NULL'
+		  now = 'NULL'
+		
+		ff.write('%s\t%s\t%s\n' %(i.strip(), age, now))
+		time.sleep(2)
