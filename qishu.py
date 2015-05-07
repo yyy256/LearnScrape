@@ -15,7 +15,7 @@ os.chdir('/home/yaoyu/金庸')
 url = "http://www.qisuu.com/s/1/"
 
 get_urls = requests.get(url)
-books_html = BeautifulSoup(get_urls.content)
+books_html = BeautifulSoup(get_urls.content, from_encoding="windows-1252")
 
 all_books = books_html.find_all('div', {'class': 'listBox'})
 
@@ -27,5 +27,5 @@ for book in all_books[0].find_all(href=re.compile('Shtml')):
     dl_book = requests.get(dl_url)
 
     book_name = re.sub(u'[\u300a\u300b\u5168\u96c6]', '', book.text)
-    with open(book_name + '.txt', 'wb') as f:
+    with open(book_name + '.txt', 'w') as f:
         f.write(dl_book.content)
